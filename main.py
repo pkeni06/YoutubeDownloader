@@ -21,7 +21,7 @@ def complete_callback(stream, file_handle):
     # progress bar stop call from GUI here
 
 
-def downloadVideo(URL, i=1, j=1):
+def downloadVideo(URL,name, i=1, j=1):
     try:
         yt = YouTube(URL)
         yt.register_on_progress_callback(progress_callback)
@@ -33,9 +33,9 @@ def downloadVideo(URL, i=1, j=1):
     stream = yt.streams.get_audio_only()
 
     print(i, " out of ", j, " : ", yt.title)
-
+    name = "\\"+ name
     try:
-        convert(stream.download(output_path=dir))
+        convert(stream.download(output_path=dir + name))
     except Exception as e:
         print(e)
 
@@ -52,7 +52,7 @@ def DownloadVideoFromObject(videoObject):
 
 
 
-def downloadPlaylist(url):
+def downloadPlaylist(url, name):
     try:
         p = Playlist(url)
 
@@ -63,7 +63,7 @@ def downloadPlaylist(url):
     try:
         for urls in p.video_urls:
             i = i + 1
-            downloadVideo(urls, i, len(p.video_urls))
+            downloadVideo(urls, name, i, len(p.video_urls))
     except Exception as e:
         print(e, "Invalid URL")
 
@@ -103,7 +103,8 @@ if __name__ == "__main__":
 
         if i == 1:
             url = input("Enter Playlist URL: ")
-            downloadPlaylist(url)
+            name = input("Enter Playlist name: ")
+            downloadPlaylist(url, name)
 
         if i == 2:
             url = input("Enter Playlist URL: ")
